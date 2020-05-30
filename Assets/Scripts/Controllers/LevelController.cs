@@ -14,9 +14,9 @@ namespace Robbo.Controllers {
 
     public class LevelController : MonoBehaviour
     {
-
-        public Sprite[] Sprites;
+        public GameObject[] Prefabs;
         public GameObject GenericItem;
+        public Sprite[] Sprites;
 
         private BoardItem[,] board;
 
@@ -35,14 +35,25 @@ namespace Robbo.Controllers {
                     
                     if (prefabName != null)
                     {
-                        var prefab = Instantiate(GenericItem, new Vector3(col, -1 * row, 0), Quaternion.identity);
-
-                        var sprite = Sprites.First(x => x.name == prefabName);
-                        prefab.GetComponent<SpriteRenderer>().sprite = sprite;
-
+                        var prefab = InstantiateItem(prefabName, row, col);
                         board[row, col] = new BoardItem(prefab);
                     }
                 }
+            }
+        }
+
+        private GameObject InstantiateItem(string name, int row, int col)
+        {
+            var prefab = Prefabs.FirstOrDefault(x => x.name == name);
+            if (prefab != null)
+            {
+                return Instantiate(prefab, new Vector3(col, -1 * row, 0), Quaternion.identity);
+            } else
+            {
+                var generic = Instantiate(GenericItem, new Vector3(col, -1 * row, 0), Quaternion.identity);
+                var sprite = Sprites.First(x => x.name == name);
+                generic.GetComponent<SpriteRenderer>().sprite = sprite;
+                return generic;
             }
         }
 
@@ -92,19 +103,19 @@ namespace Robbo.Controllers {
                 case 'H':
                     return "Ground";
                 case '&':
-                    return "MirrorOff";
+                    return "Mirror";
                 case 'R':
                     return "Robbo_1";
                 case '!':
                     return "CapsuleOff";
                 case '@':
-                    return "Enemy1_1";
+                    return "Enemy1";
                 case '}':
                     return "CannonRight";
                 case 'M':
                     return "MagnetLeft";
                 case '^':
-                    return "EnemyBird_1";
+                    return "EnemyBird";
                 default:
                     return null;
             }
