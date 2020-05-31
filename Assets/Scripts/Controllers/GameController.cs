@@ -14,22 +14,19 @@ namespace Robbo.Controllers {
         private int currentLevel = 0;
         private int levelCount;
         private GameData gameData;
-        private bool ViewEntireBoard = true;
+        private Camera overviewCamera;
 
         void Start()
         {
+            overviewCamera = Camera.allCameras.First(x => x.name == "OverviewCamera");
+            overviewCamera.enabled = false;
+
             gameData = JsonUtility.FromJson<GameData>(gameDataJson.text);
             levelCount = gameData.levels.Count();
             levelController.initLevel(gameData.levels[currentLevel]);
 
-
             UpdateLevelText();
             // var my_text = GameObject.Find("LevelTxt").GetComponent<Text>();
-        }
-
-        void Update()
-        {
-          
         }
 
         public void PrevLevel()
@@ -62,16 +59,7 @@ namespace Robbo.Controllers {
 
         public void SwitchViewMode()
         {
-            ViewEntireBoard = !ViewEntireBoard;
-            if (ViewEntireBoard)
-            {
-                Camera.main.orthographicSize = 16;
-                Camera.main.transform.position = new Vector3(7.5f, -15.5f, -10);
-            } else
-            {
-                Camera.main.orthographicSize = 7;
-                Camera.main.transform.position = new Vector3(7.5f, -6.5f, -10);
-            }
+            overviewCamera.enabled = !overviewCamera.enabled;
         }
 
         private void UpdateLevelText()

@@ -39,8 +39,14 @@ namespace Robbo.Controllers {
                     
                     if (prefabName != null)
                     {
-                        var prefab = InstantiateItem(prefabName, row, col);
-                        board[row, col] = new BoardItem(prefab);
+                        if (prefabName == "Robbo")
+                        {
+                            GameObject.Find("Robbo").transform.position = new Vector3(col, -1*row, 0);
+                        } else
+                        {
+                            var prefab = InstantiateItem(prefabName, row, col);
+                            board[row, col] = new BoardItem(prefab);
+                        }
                     }
                 }
             }
@@ -57,6 +63,7 @@ namespace Robbo.Controllers {
                 var generic = Instantiate(GenericItem, new Vector3(col, -1 * row, 0), Quaternion.identity);
                 var sprite = Sprites.First(x => x.name == name);
                 generic.GetComponent<SpriteRenderer>().sprite = sprite;
+                generic.name = name;
                 return generic;
             }
         }
