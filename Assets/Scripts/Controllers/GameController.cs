@@ -14,12 +14,14 @@ namespace Robbo.Controllers {
         private int currentLevel = 0;
         private int levelCount;
         private GameData gameData;
+        private bool ViewEntireBoard = true;
 
         void Start()
         {
             gameData = JsonUtility.FromJson<GameData>(gameDataJson.text);
             levelCount = gameData.levels.Count();
             levelController.initLevel(gameData.levels[currentLevel]);
+
 
             UpdateLevelText();
             // var my_text = GameObject.Find("LevelTxt").GetComponent<Text>();
@@ -56,6 +58,20 @@ namespace Robbo.Controllers {
 
             levelController.initLevel(gameData.levels[currentLevel]);
             UpdateLevelText();
+        }
+
+        public void SwitchViewMode()
+        {
+            ViewEntireBoard = !ViewEntireBoard;
+            if (ViewEntireBoard)
+            {
+                Camera.main.orthographicSize = 16;
+                Camera.main.transform.position = new Vector3(7.5f, -15.5f, -10);
+            } else
+            {
+                Camera.main.orthographicSize = 7;
+                Camera.main.transform.position = new Vector3(7.5f, -6.5f, -10);
+            }
         }
 
         private void UpdateLevelText()

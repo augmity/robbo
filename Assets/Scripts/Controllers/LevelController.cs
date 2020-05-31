@@ -19,6 +19,10 @@ namespace Robbo.Controllers {
         public Sprite[] Sprites;
 
         private BoardItem[,] board;
+        private int keys = 0;
+        private int ammo = 0;
+        private int screws = 0;
+        private int screwsRequired = 0;
 
         public void initLevel(Level level) {
             ClearBoard();
@@ -105,7 +109,7 @@ namespace Robbo.Controllers {
                 case '&':
                     return "Mirror";
                 case 'R':
-                    return "Robbo_1";
+                    return "Robbo";
                 case '!':
                     return "CapsuleOff";
                 case '@':
